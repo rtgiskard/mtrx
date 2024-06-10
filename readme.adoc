@@ -1,0 +1,12 @@
+= mtrx
+
+image:https://img.shields.io/badge/license-GPLv3-green.svg?style=flat[license]
+
+== a story
+
+long long ago ..
+
+
+== license
+
+This project is licensed under the terms of the https://www.gnu.org/licenses/gpl-3.0.html[GPLv3] or any later version.

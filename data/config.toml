@@ -1,0 +1,13 @@
+name = "mtrx"
+version = "0.1"
+
+[log]
+dir = "./logs"						# log dir
+level_term = "debug"				# log level for terminal
+level_file = "trace"				# log level for logfile
+rotate_size = 4194304				# B, logfile rotate on 4M
+rotate_count = 4					# max rotated log file to keep
+flush_interval = 1					# s, flush to file every second
+sync = true							# sync/async log, use sync log
+
+pattern = "[%Y.%m.%d %H:%M:%S.%e] [%^%L%$] %v"
