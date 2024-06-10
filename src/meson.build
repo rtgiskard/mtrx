@@ -26,7 +26,7 @@ deps = [
     default_options: [
       'compile_library=true',
       'default_library=static',
-      'tests=false']),
+      'tests=disabled']),
   dependency('tomlplusplus', version: '>=3.4'),
   dependency('argparse', version: '>=3.0'),
 ]
