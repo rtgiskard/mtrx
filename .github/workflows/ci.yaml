@@ -1,0 +1,44 @@
+name: build
+
+on: [push, pull_request, workflow_dispatch]
+
+defaults:
+  run:
+    shell: bash
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: "MTRX (Arch)"
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux
+
+    steps:
+      - name: Checkout repository actions
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: .github/actions
+
+      - name: Setup base
+        run: |
+          pacman --noconfirm --noprogressbar -Syyu
+          pacman --noconfirm --noprogressbar -Sy \
+            base-devel clang gcc meson
+
+      - name: Meson download
+        run: meson subprojects download
+
+      - name: Meson setup
+        run: meson setup build --buildtype release
+
+      - name: Check (clang-format)
+        run: ninja -C build clang-format-check
+
+      - name: Build
+        run: ninja -C build
+
+      - name: Test
+        run: ninja -C build test

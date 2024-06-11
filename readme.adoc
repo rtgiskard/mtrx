@@ -1,5 +1,6 @@
 = mtrx
 
+image:https://github.com/rtgiskard/mtrx/actions/workflows/ci.yaml/badge.svg[build]
 image:https://img.shields.io/badge/license-GPLv3-green.svg?style=flat[license]
 
 == a story
