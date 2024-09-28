@@ -10,6 +10,8 @@
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 
+namespace mtrx {
+
 // init_spdlog set default to async logger with multi sink (stdout, rotating_file)
 bool init_log(SView name, const LogSettings & setting) {
 	try {
@@ -62,3 +64,4 @@ bool init_log(SView name, const LogSettings & setting) {
 	// spdlog::cfg::load_env_levels();
 	return true;
 }
+} // namespace mtrx

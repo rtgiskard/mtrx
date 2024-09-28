@@ -4,6 +4,8 @@
 #include <string>
 #include <string_view>
 
+namespace mtrx {
+
 using SView = std::string_view;
 
 enum Operation {
@@ -44,5 +46,6 @@ class Config {
 
 	static Config fromArgs(int argc, char ** argv);
 };
+} // namespace mtrx
 
 #endif

@@ -12,6 +12,8 @@
 #include "const.h"
 #include "config.h"
 
+namespace mtrx {
+
 bool Config::load(SView path) {
 
 	toml::table tbl;
@@ -26,8 +28,8 @@ bool Config::load(SView path) {
 			return false;
 		}
 
-	name    = tbl["name"].value_or(mtrx::PRJ_NAME);
-	version = tbl["version"].value_or(mtrx::PRJ_VERSION);
+	name    = tbl["name"].value_or(PRJ_NAME);
+	version = tbl["version"].value_or(PRJ_VERSION);
 
 	path_load = path;
 
@@ -94,7 +96,7 @@ bool Config::verify() {
 }
 
 Config Config::fromArgs(int argc, char ** argv) {
-	argparse::ArgumentParser parser(mtrx::PRJ_NAME.data(), mtrx::PRJ_VERSION.data());
+	argparse::ArgumentParser parser(PRJ_NAME.data(), PRJ_VERSION.data());
 
 	auto verify_choice = [](SView value, const auto & choices, SView msg) {
 		if (std::find(choices.begin(), choices.end(), value) != choices.end())
@@ -118,9 +120,9 @@ Config Config::fromArgs(int argc, char ** argv) {
 		.default_value("info")
 		.nargs(1)
 		.metavar("LEVEL")
-		.help(fmt::format("log level for stdout: {}", mtrx::CHOICE_LOG_LEVELS))
+		.help(fmt::format("log level for stdout: {}", CHOICE_LOG_LEVELS))
 		.action([verify_choice](SView value) {
-			return verify_choice(value, mtrx::CHOICE_LOG_LEVELS, "--log-level");
+			return verify_choice(value, CHOICE_LOG_LEVELS, "--log-level");
 		});
 
 	parser.add_argument("-o", "--output")
@@ -130,9 +132,9 @@ Config Config::fromArgs(int argc, char ** argv) {
 		.help("dump config to the output, write stdout if '-'");
 
 	parser.add_argument("op")
-		.help(fmt::format("operations: {}", mtrx::CHOICE_OPERATIONS))
+		.help(fmt::format("operations: {}", CHOICE_OPERATIONS))
 		.action([verify_choice](SView value) {
-			return verify_choice(value, mtrx::CHOICE_OPERATIONS, "op");
+			return verify_choice(value, CHOICE_OPERATIONS, "op");
 		});
 
 	try {
@@ -164,3 +166,4 @@ Config Config::fromArgs(int argc, char ** argv) {
 
 	return config;
 }
+} // namespace mtrx

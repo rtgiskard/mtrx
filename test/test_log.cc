@@ -29,7 +29,7 @@ void bench_logger(int howmany, std::shared_ptr<spdlog::logger> log) {
 }
 
 TEST_CASE("spdlog_test") {
-	init_log("log_test", LogSettings{});
+	mtrx::init_log("log_test", mtrx::LogSettings{});
 
 	auto logger = spdlog::default_logger();
 
@@ -59,7 +59,7 @@ TEST_CASE("spdlog_test") {
 }
 
 TEST_CASE("spdlog_bench" * doctest::skip(true)) {
-	init_log("log_bench", LogSettings{});
+	mtrx::init_log("log_bench", mtrx::LogSettings{});
 	auto howmany = 200000;
 
 	// store summary to file

@@ -8,6 +8,9 @@
 
 #include "config.h"
 
+namespace mtrx {
+
 bool init_log(SView name, const LogSettings & setting);
+}
 
 #endif
