@@ -10,6 +10,13 @@ project('mtrx', 'cpp',
     # 'b_pie=true',
   ])
 
+  # spdlog: turn on/off logging statements at compile time
+  # make sure this is defined before include spdlog.h
+add_project_arguments(
+  '-DSPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG',
+  language : 'cpp')
+
+
 subdir('src/')
 subdir('data/')
 
