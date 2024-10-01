@@ -26,8 +26,10 @@ deps = [
 ]
 
 subdir('utils/')
+subdir('udp2p/')
 
 deps += utils_deps
+deps += udp2p_deps
 
 exe = executable('mtrx',
   sources: src,
