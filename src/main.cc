@@ -1,11 +1,12 @@
+#include <spdlog/spdlog.h>
+
 #include "const.h"
 #include "config.h"
-#include "log.h"
 
 int main(int argc, char ** argv) {
 
 	auto config = mtrx::Config::fromArgs(argc, argv);
-	if (!mtrx::init_log(mtrx::PRJ_NAME, config.log))
+	if (!mtrx::utils::init_log(mtrx::PRJ_NAME, config.log))
 		return 1;
 
 	spdlog::info("== ver: {}, pid: {}", mtrx::PRJ_VERSION, getpid());

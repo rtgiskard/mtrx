@@ -21,15 +21,13 @@ src += const_vcs
 
 deps = [
   dependency('fmt'),
-  dependency('spdlog',
-    version: '>=1.14',
-    default_options: [
-      'compile_library=true',
-      'default_library=static',
-      'tests=disabled']),
   dependency('tomlplusplus', version: '>=3.4'),
   dependency('argparse', version: '>=3.0'),
 ]
+
+subdir('utils/')
+
+deps += utils_deps
 
 exe = executable('mtrx',
   sources: src,

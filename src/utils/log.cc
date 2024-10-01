@@ -1,19 +1,18 @@
 #include <iostream>
 
-// spdlog switch might be defined there
-#include "log.h"
-
-// spdlog
 #include <spdlog/common.h>
 #include <spdlog/spdlog.h>
 #include <spdlog/async.h>
 #include <spdlog/sinks/stdout_color_sinks.h>
 #include <spdlog/sinks/rotating_file_sink.h>
 
+#include "log.h"
+
 namespace mtrx {
+namespace utils {
 
 // init_spdlog set default to async logger with multi sink (stdout, rotating_file)
-bool init_log(SView name, const LogSettings & setting) {
+bool init_log(std::string_view name, const LogSettings & setting) {
 	try {
 		auto log_dir = setting.dir.size() > 0 ? setting.dir : "./logs";
 
@@ -60,8 +59,10 @@ bool init_log(SView name, const LogSettings & setting) {
 		return false;
 	}
 
-	// SPDLOG_LEVEL=info,mylogger=trace ./example
+	// to use: SPDLOG_LEVEL=info,mylogger=trace ./example
 	// spdlog::cfg::load_env_levels();
+
 	return true;
 }
+} // namespace utils
 } // namespace mtrx
