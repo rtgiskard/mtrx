@@ -1,7 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENTATION_IN_DLL
 #include <doctest.h>
 
-#include "../src/log.h"
+#include "../src/utils/log.h"
 
 #include <chrono>
 #include <spdlog/spdlog.h>
@@ -29,7 +29,7 @@ void bench_logger(int howmany, std::shared_ptr<spdlog::logger> log) {
 }
 
 TEST_CASE("spdlog_test") {
-	mtrx::init_log("log_test", mtrx::LogSettings{});
+	mtrx::utils::init_log("log_test", mtrx::utils::LogSettings{});
 
 	auto logger = spdlog::default_logger();
 
@@ -59,7 +59,7 @@ TEST_CASE("spdlog_test") {
 }
 
 TEST_CASE("spdlog_bench" * doctest::skip(true)) {
-	mtrx::init_log("log_bench", mtrx::LogSettings{});
+	mtrx::utils::init_log("log_bench", mtrx::utils::LogSettings{});
 	auto howmany = 200000;
 
 	// store summary to file

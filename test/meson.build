@@ -2,7 +2,9 @@ cmd = run_command('find . -name *.cc'.split(), check: true)
 src_test = cmd.stdout().strip().split('\n')
 
 src_test += [
-  '../src/log.cc',
+  '../src/utils/log.cc',
+  '../src/utils/crypto.cc',
+  '../src/utils/misc.cc',
 ]
 
 deps_test = deps + [ dependency('doctest') ]
