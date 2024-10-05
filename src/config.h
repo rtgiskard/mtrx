@@ -14,6 +14,7 @@ enum Operation {
 	OP_RUN,
 	OP_TEST,
 	OP_DUMP,
+	OP_UDP2P,
 };
 
 class Config {

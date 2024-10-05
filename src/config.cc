@@ -149,9 +149,10 @@ Config Config::fromArgs(int argc, char ** argv) {
 
 	// op is verified on arg parse
 	config.op = std::unordered_map<SView, Operation>{
-		{"dump", OP_DUMP},
-		{"run",  OP_RUN },
-		{"test", OP_TEST},
+		{"dump",  OP_DUMP },
+		{"run",   OP_RUN  },
+		{"test",  OP_TEST },
+		{"udp2p", OP_UDP2P},
 	}[parser.get<std::string>("op")];
 
 	// load config
