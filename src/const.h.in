@@ -1,7 +1,7 @@
 #ifndef INCLUDE_CONST_H
 #define INCLUDE_CONST_H
 
-#include <array>
+#include <initializer_list>
 #include <string_view>
 
 namespace mtrx {
@@ -10,10 +10,10 @@ namespace mtrx {
 inline constexpr std::string_view PRJ_NAME    = "@NAME@";
 inline constexpr std::string_view PRJ_VERSION = "<VERSION>";
 
-inline constexpr auto CHOICE_LOG_LEVELS = std::array<std::string_view, 7>{
+inline constexpr auto CHOICE_LOG_LEVELS = std::initializer_list<std::string_view>{
 	"trace", "debug", "info", "warning", "error", "critical", "off"};
 inline constexpr auto CHOICE_OPERATIONS =
-	std::array<std::string_view, 3>{"dump", "run", "test"};
+	std::initializer_list<std::string_view>{"dump", "run", "test"};
 
 } // namespace mtrx
 
