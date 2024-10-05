@@ -15,7 +15,7 @@ using RandomBytesEngine =
 	std::independent_bits_engine<std::default_random_engine, CHAR_BIT, uint8_t>;
 
 struct HashParams {
-	std::string salt = "0xSalty.~#@&"; //
+	std::string salt = "0xSalty.~#@&"; // req: salt.size() >= 8
 
 	uint8_t t_cost  = 4;  // n-pass computation
 	uint8_t m_cost  = 10; // 2^N KiB memory usage

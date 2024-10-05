@@ -1,9 +1,7 @@
 #include <cstdint>
 #include <string>
+#include <memory>
 #include <argon2.h>
-
-#include <spdlog/spdlog.h>
-#include <spdlog/fmt/bin_to_hex.h>
 
 #include "crypto.h"
 
