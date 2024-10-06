@@ -1,6 +1,7 @@
 #define DOCTEST_CONFIG_IMPLEMENTATION_IN_DLL
 #include "doctest.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <array>
 #include <string>
@@ -10,14 +11,14 @@
 
 auto utils = mtrx::utils::KeyUtils(mtrx::utils::HashParams());
 
-TEST_CASE("gen rand bytes") {
+TEST_CASE("genRandBytes") {
 	std::array<uint8_t, 28> hash;
 
 	utils.seed();
 	utils.genRandBytes(hash.data(), hash.size());
 }
 
-TEST_CASE("key hash and verify") {
+TEST_CASE("KeyUtils: hash and verify") {
 	// provide hash buffer and a sample key
 	std::array<uint8_t, 32> hash;
 	std::string             key = "key to hash and verify";
@@ -43,6 +44,9 @@ TEST_CASE("hexFromBytes") {
 	CHECK(mtrx::utils::hexFromBytes(buf, 1) == "00");
 	CHECK(mtrx::utils::hexFromBytes(buf, 2) == "0002");
 	CHECK(mtrx::utils::hexFromBytes(buf, 4) == "0002c2ef");
+
+	auto buf2 = mtrx::utils::make_bytes(0x00, 0x02, 0xc2, 0xef);
+	CHECK(mtrx::utils::hexFromBytes(buf2.data(), buf2.size()) == "0002c2ef");
 }
 
 TEST_CASE("hexToBytes") {
@@ -84,4 +88,10 @@ TEST_CASE("rand hex convert") {
 
 	CHECK(mtrx::utils::hexToBytes(str, buf, sizeof(buf)));
 	CHECK(mtrx::utils::hexFromBytes(buf, sizeof(buf)) == str);
+
+	CHECK(mtrx::utils::hexToBytes(str, (char *)buf, sizeof(buf)));
+	CHECK(mtrx::utils::hexFromBytes((char *)buf, sizeof(buf)) == str);
+
+	CHECK(mtrx::utils::hexToBytes(str, (std::byte *)buf, sizeof(buf)));
+	CHECK(mtrx::utils::hexFromBytes((std::byte *)buf, sizeof(buf)) == str);
 }
