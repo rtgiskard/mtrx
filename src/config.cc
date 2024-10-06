@@ -1,16 +1,18 @@
+#include <cstdint>
+#include <string>
 #include <fstream>
 #include <iostream>
 #include <filesystem>
 #include <algorithm>
-#include <fmt/ranges.h>
 
-#include <string>
+#include <fmt/ranges.h>
 #include <toml++/toml.h>
 #include <spdlog/spdlog.h>
 #include <argparse/argparse.hpp>
 
 #include "const.h"
 #include "config.h"
+#include "utils/misc.h"
 
 namespace mtrx {
 
@@ -44,6 +46,18 @@ bool Config::load(SView path) {
 	log.flush_interval = tbl["log"]["flush_interval"].value_or(1);
 	log.sync           = tbl["log"]["sync"].value_or(true);
 
+	udp2p.mode        = tbl["udp2p"]["mode"].value_or(udp2p::Udp2p_Mode::UDP2P_MODE_PEER);
+	udp2p.server_port = tbl["udp2p"]["server_port"].value_or(2048);
+	udp2p.server_addr = tbl["udp2p"]["server_addr"].value_or("127.0.0.1");
+
+	auto ret =
+		utils::hexToBytes(tbl["udp2p"]["peer_id"].value_or("00"),
+	                      reinterpret_cast<uint8_t *>(&udp2p.peer_id), sizeof(udp2p.peer_id));
+	if (!ret) {
+		std::cout << "* invalid peer_id: should be valid hex string. using 0" << std::endl;
+		udp2p.peer_id = 0;
+	}
+
 	return true;
 }
 
@@ -59,10 +73,20 @@ bool Config::dump(SView path) {
 		{"pattern",        log.pattern       },
 	};
 
+	auto peer_id_hex = utils::hexFromBytes(reinterpret_cast<uint8_t *>(&udp2p.peer_id),
+	                                       sizeof(udp2p.peer_id));
+	auto tbl_udp2p   = toml::table{
+		  {"mode",        udp2p.mode       },
+		  {"peer_id",     peer_id_hex      },
+		  {"server_addr", udp2p.server_addr},
+		  {"server_port", udp2p.server_port},
+    };
+
 	auto tbl = toml::table{
-		{"name",    name   },
-		{"version", version},
-		{"log",     tbl_log},
+		{"name",    name     },
+		{"version", version  },
+		{"log",     tbl_log  },
+		{"udp2p",   tbl_udp2p},
 	};
 
 	const auto path_out = (path == "" ? path_dump : path);

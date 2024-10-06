@@ -4,6 +4,7 @@
 #include <string>
 #include <string_view>
 
+#include "udp2p/udp2p.h"
 #include "utils/log.h"
 
 namespace mtrx {
@@ -29,6 +30,7 @@ class Config {
 	std::string version;
 
 	utils::LogSettings log;
+	udp2p::Config udp2p;
 
   public:
 	bool load(SView path);
