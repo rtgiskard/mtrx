@@ -21,7 +21,7 @@ int main(int argc, char ** argv) {
 		config.dump();
 		break;
 	case mtrx::OP_UDP2P: {
-		auto udp2p = mtrx::udp2p::Udp2p();
+		auto udp2p = mtrx::udp2p::Udp2p(config.udp2p);
 		udp2p.run();
 		break;
 	}
