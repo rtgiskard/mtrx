@@ -10,4 +10,4 @@ rotate_count = 4					# max rotated log file to keep
 flush_interval = 1					# s, flush to file every second
 sync = true							# sync/async log, use sync log
 
-pattern = "[%Y.%m.%d %H:%M:%S.%e] [%^%L%$] %v"
+pattern = "%Y%m%d_%H%M%S.%e %^%L%$ %t %n: %v"
