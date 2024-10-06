@@ -2,4 +2,5 @@ udp2p_deps = [
   dependency('asio'),
   dependency('zpp_bits'),
   dependency('magic_enum'),
+  dependency('botan-3'),
 ]
