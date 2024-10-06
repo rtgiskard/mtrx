@@ -9,9 +9,11 @@
 #include <toml++/toml.h>
 #include <spdlog/spdlog.h>
 #include <argparse/argparse.hpp>
+#include <magic_enum.hpp>
 
 #include "const.h"
 #include "config.h"
+#include "udp2p/udp2p.h"
 #include "utils/misc.h"
 
 namespace mtrx {
@@ -46,15 +48,23 @@ bool Config::load(SView path) {
 	log.flush_interval = tbl["log"]["flush_interval"].value_or(1);
 	log.sync           = tbl["log"]["sync"].value_or(true);
 
-	udp2p.mode        = tbl["udp2p"]["mode"].value_or(udp2p::Udp2p_Mode::UDP2P_MODE_PEER);
 	udp2p.server_port = tbl["udp2p"]["server_port"].value_or(2048);
 	udp2p.server_addr = tbl["udp2p"]["server_addr"].value_or("127.0.0.1");
+
+	auto mode = magic_enum::enum_cast<udp2p::Udp2p_Mode>(tbl["udp2p"]["mode"].value_or(""));
+	if (mode.has_value())
+		udp2p.mode = mode.value();
+	else {
+		std::cerr << "* udp2p: invalid mode, using PEER instead" << std::endl;
+		udp2p.mode = udp2p::Udp2p_Mode::PEER;
+	}
 
 	auto ret =
 		utils::hexToBytes(tbl["udp2p"]["peer_id"].value_or("00"),
 	                      reinterpret_cast<uint8_t *>(&udp2p.peer_id), sizeof(udp2p.peer_id));
 	if (!ret) {
-		std::cout << "* invalid peer_id: should be valid hex string. using 0" << std::endl;
+		std::cerr << "* udp2p: invalid peer_id: should be valid hex string. using 0 instead"
+				  << std::endl;
 		udp2p.peer_id = 0;
 	}
 
@@ -76,11 +86,11 @@ bool Config::dump(SView path) {
 	auto peer_id_hex = utils::hexFromBytes(reinterpret_cast<uint8_t *>(&udp2p.peer_id),
 	                                       sizeof(udp2p.peer_id));
 	auto tbl_udp2p   = toml::table{
-		  {"mode",        udp2p.mode       },
-		  {"peer_id",     peer_id_hex      },
-		  {"server_addr", udp2p.server_addr},
-		  {"server_port", udp2p.server_port},
-    };
+		  {"mode",        magic_enum::enum_name(udp2p.mode)},
+		  {"peer_id",     peer_id_hex                      },
+		  {"server_addr", udp2p.server_addr                },
+		  {"server_port", udp2p.server_port                },
+    }; // namespace mtrx
 
 	auto tbl = toml::table{
 		{"name",    name     },
@@ -172,12 +182,9 @@ Config Config::fromArgs(int argc, char ** argv) {
 	Config config;
 
 	// op is verified on arg parse
-	config.op = std::unordered_map<SView, Operation>{
-		{"dump",  OP_DUMP },
-		{"run",   OP_RUN  },
-		{"test",  OP_TEST },
-		{"udp2p", OP_UDP2P},
-	}[parser.get<std::string>("op")];
+	auto operation = magic_enum::enum_cast<Operation>(parser.get<std::string>("op"),
+	                                                  magic_enum::case_insensitive);
+	config.op      = operation.value_or(Operation::DUMP);
 
 	// load config
 	config.load(parser.get<std::string>("-c"));

@@ -12,7 +12,7 @@ sync = true							# sync/async log, use sync log
 pattern = "%Y%m%d_%H%M%S.%e %^%L%$ %t %n: %v"
 
 [udp2p]
-mode = 2
+mode = 'HYBRID'
 peer_id = 'aaccaaccaacceecc'
 server_addr = '127.0.0.1'
 server_port = 2048
