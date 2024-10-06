@@ -11,11 +11,11 @@ namespace mtrx {
 
 using SView = std::string_view;
 
-enum Operation {
-	OP_RUN,
-	OP_TEST,
-	OP_DUMP,
-	OP_UDP2P,
+enum class Operation {
+	RUN,
+	TEST,
+	DUMP,
+	UDP2P,
 };
 
 class Config {
@@ -30,7 +30,7 @@ class Config {
 	std::string version;
 
 	utils::LogSettings log;
-	udp2p::Config udp2p;
+	udp2p::Config      udp2p;
 
   public:
 	bool load(SView path);

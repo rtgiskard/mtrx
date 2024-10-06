@@ -15,9 +15,9 @@ namespace mtrx {
 namespace udp2p {
 
 enum class Udp2p_Mode {
-	UDP2P_MODE_PEER,   // peer only
-	UDP2P_MODE_SERVER, // server only
-	UDP2P_MODE_HYBRID  // peer + server
+	PEER,   // peer only
+	SERVER, // server only
+	HYBRID  // peer + server
 };
 
 class Config {

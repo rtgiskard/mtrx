@@ -15,13 +15,13 @@ void Udp2p::run() {
 	logger_->info("run mode: {}", static_cast<int>(config_.mode));
 
 	switch (config_.mode) {
-	case Udp2p_Mode::UDP2P_MODE_PEER:
+	case Udp2p_Mode::PEER:
 		peer_ptr_ = std::make_unique<Peer>(ctx_);
 		break;
-	case Udp2p_Mode::UDP2P_MODE_SERVER:
+	case Udp2p_Mode::SERVER:
 		server_ptr_ = std::make_unique<Server>(ctx_);
 		break;
-	case Udp2p_Mode::UDP2P_MODE_HYBRID:
+	case Udp2p_Mode::HYBRID:
 		peer_ptr_   = std::make_unique<Peer>(ctx_);
 		server_ptr_ = std::make_unique<Server>(ctx_);
 		break;

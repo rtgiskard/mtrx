@@ -17,10 +17,10 @@ int main(int argc, char ** argv) {
 		return 2;
 
 	switch (config.op) {
-	case mtrx::OP_DUMP:
+	case mtrx::Operation::DUMP:
 		config.dump();
 		break;
-	case mtrx::OP_UDP2P: {
+	case mtrx::Operation::UDP2P: {
 		auto udp2p = mtrx::udp2p::Udp2p(config.udp2p);
 		udp2p.run();
 		break;
