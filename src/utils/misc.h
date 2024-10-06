@@ -7,8 +7,14 @@
 namespace mtrx {
 namespace utils {
 
-std::string hexFromBytes(const uint8_t * bytes, const uint32_t size);
-bool        hexToBytes(const std::string & hex, uint8_t * bytes, const uint32_t size);
+template <typename T>
+concept Byte = sizeof(T) == 1;
+
+template <Byte T>
+std::string hexFromBytes(const T * bytes, const uint32_t size);
+
+template <Byte T>
+bool hexToBytes(const std::string & hex, T * bytes, const uint32_t size);
 
 }; // namespace utils
 }; // namespace mtrx
