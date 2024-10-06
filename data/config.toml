@@ -9,5 +9,10 @@ rotate_size = 4194304				# B, logfile rotate on 4M
 rotate_count = 4					# max rotated log file to keep
 flush_interval = 1					# s, flush to file every second
 sync = true							# sync/async log, use sync log
-
 pattern = "%Y%m%d_%H%M%S.%e %^%L%$ %t %n: %v"
+
+[udp2p]
+mode = 2
+peer_id = 'aaccaaccaacceecc'
+server_addr = '127.0.0.1'
+server_port = 2048
