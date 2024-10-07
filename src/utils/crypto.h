@@ -1,12 +1,13 @@
 #ifndef INCLUDE_UTILS_CRYPTO_H
 #define INCLUDE_UTILS_CRYPTO_H
 
+#include <climits>
 #include <cstdint>
 #include <random>
+#include <span>
 #include <string>
+#include <vector>
 #include <algorithm>
-
-#include <argon2.h>
 
 namespace mtrx {
 namespace utils {
@@ -15,36 +16,32 @@ using RandomBytesEngine =
 	std::independent_bits_engine<std::default_random_engine, CHAR_BIT, uint8_t>;
 
 struct HashParams {
-	std::string salt = "0xSalty.~#@&"; // req: salt.size() >= 8
+	std::string          family = "Argon2id"; // use Argon2id
+	std::vector<uint8_t> salt   =             // req: salt.size() >= 8
+		{0x4c, 0x0e, 0x56, 0x20, 0xe2, 0x70, 0x94, 0x74, 0x4e, 0x67, 0xec, 0xae};
 
-	uint8_t t_cost  = 4;  // n-pass computation
-	uint8_t m_cost  = 10; // 2^N KiB memory usage
-	uint8_t paralle = 2;  // number of threads and lanes
-
-	argon2_type    hash_type = Argon2_id;
-	argon2_version hash_ver  = ARGON2_VERSION_13;
+	uint8_t t = 4;  // n-pass computation
+	uint8_t m = 10; // 2^N KiB memory usage
+	uint8_t p = 2;  // number of threads and lanes
 };
 
 class KeyUtils {
   public:
-	KeyUtils(const HashParams & hash_params) : hash_params(hash_params) {}
+	KeyUtils(const HashParams & hash_params) : hash_params_(hash_params) {}
 
-	static inline void seed() { rng.seed(std::random_device()()); }
+	static inline void seed() { rng_.seed(std::random_device()()); }
 
 	static inline void genRandBytes(uint8_t * buf, const uint32_t size = 1) {
-		std::generate(buf, buf + size, std::ref(rng));
+		std::generate(buf, buf + size, std::ref(rng_));
 	}
 
-	bool hashFromKey(uint8_t * hash, const uint32_t hash_size, const std::string & key);
-	bool verifyHash(const uint8_t * hash, const uint32_t hash_size, const std::string & key);
+	void hashKey(std::span<uint8_t> hash, const std::string & key);
+	bool verifyHash(const std::span<uint8_t> hash, const std::string & key);
 
   private:
-	argon2_context genHashContext(const uint8_t * hash, const uint32_t hash_size,
-	                              const std::string & key);
+	HashParams hash_params_;
 
-	HashParams hash_params;
-
-	static RandomBytesEngine rng;
+	static RandomBytesEngine rng_;
 };
 
 }; // namespace utils

@@ -5,5 +5,5 @@ utils_deps = [
       'compile_library=true',
       'default_library=static',
       'tests=disabled']),
-  dependency('libargon2'),
+  dependency('botan-3'),
 ]
