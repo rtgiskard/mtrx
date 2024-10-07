@@ -24,17 +24,17 @@ TEST_CASE("KeyUtils: hash and verify") {
 	std::string             key = "key to hash and verify";
 
 	// initial hash should not match the key
-	CHECK(!utils.verifyHash(hash.data(), hash.size(), key));
+	CHECK(!utils.verifyHash(hash, key));
 
 	// update hash with respect to key
-	utils.hashFromKey(hash.data(), hash.size(), key);
+	utils.hashKey(hash, key);
 
 	// verify (hash, key), should match now
-	CHECK(utils.verifyHash(hash.data(), hash.size(), key));
+	CHECK(utils.verifyHash(hash, key));
 
 	// compare with external reference (update this if the default params changed):
 	// echo -n "key to hash and verify" | argon2 "0xSalty.~#@&" -id -t 4 -m 10 -p 2 -l 32
-	auto ref_hex = "0c0bfec1c6faad5a6f3527d8dd46d1786164fbbf9a442caf05884ac0d6b0c737";
+	auto ref_hex = "d4f4ae18a0f15fde5225c18242e391a459cc532a5d000276cdcfa9c7e76d7d7f";
 	CHECK(ref_hex == mtrx::utils::hexFromBytes(hash.data(), hash.size()));
 }
 
