@@ -31,7 +31,6 @@ bool init_log(std::string_view name, const LogSettings & setting) {
 		// 	sync stdout > async_stdout
 		if (setting.sync)
 			logger = std::make_shared<spdlog::logger>("main", sink_list);
-
 		else {
 			// queue with max 4k items 1 backing thread
 			spdlog::init_thread_pool(4096, 1);
@@ -49,7 +48,8 @@ bool init_log(std::string_view name, const LogSettings & setting) {
 		logger->set_pattern(setting.pattern);
 
 		// Flush all *registered* loggers using a worker thread at interval
-		spdlog::flush_every(std::chrono::seconds(setting.flush_interval));
+		if (setting.flush_interval > 0)
+			spdlog::flush_every(std::chrono::seconds(setting.flush_interval));
 
 		spdlog::set_default_logger(logger);
 
